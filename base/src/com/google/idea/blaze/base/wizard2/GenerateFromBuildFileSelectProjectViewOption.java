@@ -195,16 +195,17 @@ public class GenerateFromBuildFileSelectProjectViewOption implements BlazeSelect
     WorkspacePathResolver workspacePathResolver =
         builder.getWorkspaceData().workspacePathResolver();
 
-    File fileBrowserRoot = builder.getWorkspaceData().fileBrowserRoot();
-    File startingLocation = fileBrowserRoot;
+    VirtualFile fileBrowserRoot = builder.getWorkspaceData().fileBrowserRoot();
+    VirtualFile startingLocation = fileBrowserRoot;
     String buildFilePath = getBuildFilePath();
     if (!buildFilePath.isEmpty() && WorkspacePath.isValid(buildFilePath)) {
       // If the user has typed part of the path then clicked the '...', try to start from the
       // partial state
       buildFilePath = StringUtil.trimEnd(buildFilePath, '/');
       if (WorkspacePath.isValid(buildFilePath)) {
-        File fileLocation = workspacePathResolver.resolveToFile(new WorkspacePath(buildFilePath));
-        if (fileLocation.exists() && FileUtil.isAncestor(fileBrowserRoot, fileLocation, true)) {
+        File ioFileLocation = workspacePathResolver.resolveToFile(new WorkspacePath(buildFilePath));
+        VirtualFile fileLocation = LocalFileSystem.getInstance().findFileByIoFile(ioFileLocation);
+        if (fileLocation.exists() && FileUtil.isAncestor(fileBrowserRoot.getPath(), fileLocation.getPath(), true)) {
           startingLocation = fileLocation;
         }
       }
@@ -224,7 +225,7 @@ public class GenerateFromBuildFileSelectProjectViewOption implements BlazeSelect
       return;
     }
 
-    String newWorkspacePath = FileUtil.getRelativePath(fileBrowserRoot, new File(file.getPath()));
+    String newWorkspacePath = FileUtil.getRelativePath(fileBrowserRoot.getPath(), file.getPath(), '/');
     buildFilePathField.setText(newWorkspacePath);
   }
 }

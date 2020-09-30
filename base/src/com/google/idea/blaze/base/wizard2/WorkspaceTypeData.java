@@ -19,6 +19,7 @@ import com.google.auto.value.AutoValue;
 import com.google.idea.blaze.base.model.primitives.WorkspaceRoot;
 import com.google.idea.blaze.base.settings.BuildSystem;
 import com.google.idea.blaze.base.sync.workspace.WorkspacePathResolver;
+import com.intellij.openapi.vfs.VirtualFile;
 import java.io.File;
 import javax.annotation.Nullable;
 
@@ -40,7 +41,7 @@ public abstract class WorkspaceTypeData {
   public abstract WorkspacePathResolver workspacePathResolver();
 
   /** Returns a root directory to use for browsing workspace paths. */
-  public abstract File fileBrowserRoot();
+  public abstract VirtualFile fileBrowserRoot();
 
   /** Returns the name of the workspace. Used to generate default project names. */
   public abstract String workspaceName();
@@ -67,7 +68,7 @@ public abstract class WorkspaceTypeData {
     public abstract WorkspaceTypeData.Builder setWorkspacePathResolver(
         WorkspacePathResolver pathResolver);
 
-    public abstract WorkspaceTypeData.Builder setFileBrowserRoot(File fileBrowserRoot);
+    public abstract WorkspaceTypeData.Builder setFileBrowserRoot(VirtualFile fileBrowserRoot);
 
     public abstract WorkspaceTypeData.Builder setWorkspaceName(String workspaceName);
 

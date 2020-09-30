@@ -113,8 +113,8 @@ public class UseExistingBazelWorkspaceOption implements TopLevelSelectWorkspaceO
     if (directory.isEmpty()) {
       throw new ConfigurationException("Please select a workspace");
     }
-    File workspaceRootFile = new File(directory);
-    if (!workspaceRootFile.exists()) {
+    VirtualFile workspaceRootFile = LocalFileSystem.getInstance().refreshAndFindFileByPath(directory);
+    if (workspaceRootFile == null || !workspaceRootFile.exists()) {
       throw new ConfigurationException("Workspace does not exist");
     }
     if (!isWorkspaceRoot(workspaceRootFile)) {
@@ -122,11 +122,11 @@ public class UseExistingBazelWorkspaceOption implements TopLevelSelectWorkspaceO
           "Invalid workspace root: choose a bazel workspace directory "
               + "(containing a WORKSPACE file)");
     }
-    WorkspaceRoot root = new WorkspaceRoot(workspaceRootFile);
+    WorkspaceRoot root = new WorkspaceRoot(new File(workspaceRootFile.getPath()));
     return WorkspaceTypeData.builder()
         .setWorkspaceName(workspaceRootFile.getName())
         .setWorkspaceRoot(root)
-        .setCanonicalProjectDataLocation(workspaceRootFile)
+        .setCanonicalProjectDataLocation(new File(workspaceRootFile.getPath()))
         .setFileBrowserRoot(workspaceRootFile)
         .setWorkspacePathResolver(new WorkspacePathResolverImpl(root))
         .setBuildSystem(BuildSystem.Bazel)

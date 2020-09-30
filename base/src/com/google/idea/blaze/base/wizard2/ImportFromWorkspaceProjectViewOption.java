@@ -146,16 +146,17 @@ public class ImportFromWorkspaceProjectViewOption implements BlazeSelectProjectV
 
     WorkspacePathResolver workspacePathResolver =
         builder.getWorkspaceData().workspacePathResolver();
-    File fileBrowserRoot = builder.getWorkspaceData().fileBrowserRoot();
-    File startingLocation = fileBrowserRoot;
+    VirtualFile fileBrowserRoot = builder.getWorkspaceData().fileBrowserRoot();
+    VirtualFile startingLocation = fileBrowserRoot;
     String projectViewPath = getProjectViewPath();
     if (!projectViewPath.isEmpty()) {
       // If the user has typed part of the path then clicked the '...', try to start from the
       // partial state
       projectViewPath = StringUtil.trimEnd(projectViewPath, '/');
       if (WorkspacePath.isValid(projectViewPath)) {
-        File fileLocation = workspacePathResolver.resolveToFile(new WorkspacePath(projectViewPath));
-        if (fileLocation.exists() && FileUtil.isAncestor(fileBrowserRoot, fileLocation, true)) {
+        File ioFileLocation = workspacePathResolver.resolveToFile(new WorkspacePath(projectViewPath));
+        VirtualFile fileLocation = LocalFileSystem.getInstance().findFileByIoFile(ioFileLocation);
+        if (fileLocation.exists() && FileUtil.isAncestor(fileBrowserRoot.getPath(), fileLocation.getPath(), true)) {
           startingLocation = fileLocation;
         }
       }
@@ -171,14 +172,14 @@ public class ImportFromWorkspaceProjectViewOption implements BlazeSelectProjectV
     if (!FileUtil.startsWith(file.getPath(), fileBrowserRoot.getPath())) {
       Messages.showErrorDialog(
           String.format(
-              "You must choose a project view file under %s. "
+              "You must choose a project view file under %s, chose %s. "
                   + "To use an external project view, please use the 'Copy external' option.",
-              fileBrowserRoot.getPath()),
+              fileBrowserRoot.getPath(), file.getPath()),
           "Cannot Use Project View File");
       return;
     }
 
-    String newWorkspacePath = FileUtil.getRelativePath(fileBrowserRoot, new File(file.getPath()));
+    String newWorkspacePath = FileUtil.getRelativePath(fileBrowserRoot.getPath(), file.getPath(), '/');
     projectViewPathField.setText(newWorkspacePath);
   }
 }

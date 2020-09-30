@@ -41,6 +41,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.impl.ProjectImpl;
 import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.LanguageTextField;
 import com.intellij.ui.LanguageTextField.SimpleDocumentCreator;
 import com.intellij.ui.components.JBLabel;
@@ -173,7 +174,7 @@ public class ProjectViewUi {
     useShared.setEnabled(sharedProjectViewText != null);
 
     setDummyWorkspacePathResolverProvider(this.workspacePathResolver);
-    setProjectViewText(projectViewText);
+    setProjectViewText(StringUtil.convertLineSeparators(projectViewText));
   }
 
   private void setDummyWorkspacePathResolverProvider(WorkspacePathResolver workspacePathResolver) {
