@@ -412,19 +412,20 @@ public class BlazeGoRunConfigurationRunner implements BlazeCommandRunConfigurati
     ImmutableMap.Builder<String, String> envVars = ImmutableMap.builder();
     final File binary;
     final File workingDir;
-    Matcher testScrDir = TEST_SRCDIR.matcher(text);
-    if (testScrDir.find()) {
+    Matcher testSrcDirMatcher = TEST_SRCDIR.matcher(text);
+    if (testSrcDirMatcher.find()) {
       // Format is <wrapper-script> <executable> arg0 arg1 arg2 ... argN "@"
       if (args.size() < 3) {
         throw new ExecutionException("Failed to parse args in script_path: " + scriptPathFile);
       }
-      envVars.put("TEST_SRCDIR", testScrDir.group(1));
+      String testSrcDir = testSrcDirMatcher.group(1).trim();
+      envVars.put("TEST_SRCDIR", testSrcDir);
       workingDir = workspaceRoot.directory();
       String workspaceName = execRoot.getName();
       binary =
           Paths.get(
                   workspaceRoot.directory().getPath(),
-                  testScrDir.group(1),
+                  testSrcDir,
                   workspaceName,
                   args.get(1))
               .toFile();
