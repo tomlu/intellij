@@ -30,6 +30,7 @@ import com.google.idea.blaze.base.projectview.section.sections.TextBlockSection;
 import com.google.idea.blaze.base.sync.projectview.RelatedWorkspacePathFinder;
 import com.google.idea.blaze.base.sync.workspace.WorkspacePathResolver;
 import com.google.idea.blaze.base.ui.UiUtil;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDialog;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
@@ -205,7 +206,7 @@ public class GenerateFromBuildFileSelectProjectViewOption implements BlazeSelect
       if (WorkspacePath.isValid(buildFilePath)) {
         File ioFileLocation = workspacePathResolver.resolveToFile(new WorkspacePath(buildFilePath));
         VirtualFile fileLocation = LocalFileSystem.getInstance().findFileByIoFile(ioFileLocation);
-        if (fileLocation.exists() && FileUtil.isAncestor(fileBrowserRoot.getPath(), fileLocation.getPath(), true)) {
+        if (fileLocation.exists() && SafeFileUtil.isAncestor(fileBrowserRoot.getPath(), fileLocation.getPath(), true)) {
           startingLocation = fileLocation;
         }
       }
@@ -218,7 +219,7 @@ public class GenerateFromBuildFileSelectProjectViewOption implements BlazeSelect
     }
     VirtualFile file = files[0];
 
-    if (!FileUtil.isAncestor(fileBrowserRoot.getPath(), file.getPath(), true)) {
+    if (!SafeFileUtil.isAncestor(fileBrowserRoot.getPath(), file.getPath(), true)) {
       Messages.showErrorDialog(
           String.format("You must choose a BUILD file under %s.", fileBrowserRoot.getPath()),
           "Cannot Use BUILD File");

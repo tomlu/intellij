@@ -22,6 +22,7 @@ import com.google.idea.blaze.base.model.primitives.WorkspacePath;
 import com.google.idea.blaze.base.model.primitives.WorkspaceRoot;
 import com.google.idea.blaze.base.settings.Blaze;
 import com.google.idea.blaze.base.sync.projectview.ImportRoots;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.FileUtil;
 import java.io.File;
@@ -63,7 +64,7 @@ public class BuildTargetFinder {
             .rootDirectories()
             .stream()
             .map(workspaceRoot::fileForPath)
-            .filter(potentialRoot -> FileUtil.isAncestor(potentialRoot, directory, false))
+            .filter(potentialRoot -> SafeFileUtil.isAncestor(potentialRoot, directory, false))
             .findFirst()
             .orElse(null);
     if (root == null) {
@@ -77,7 +78,7 @@ public class BuildTargetFinder {
         return buildFile;
       }
       currentDirectory = currentDirectory.getParentFile();
-    } while (currentDirectory != null && FileUtil.isAncestor(root, currentDirectory, false));
+    } while (currentDirectory != null && SafeFileUtil.isAncestor(root, currentDirectory, false));
 
     return null;
   }

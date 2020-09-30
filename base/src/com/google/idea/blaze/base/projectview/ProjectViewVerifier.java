@@ -32,6 +32,7 @@ import com.google.idea.blaze.base.sync.BlazeSyncPlugin;
 import com.google.idea.blaze.base.sync.projectview.LanguageSupport;
 import com.google.idea.blaze.base.sync.projectview.WorkspaceLanguageSettings;
 import com.google.idea.blaze.base.sync.workspace.WorkspacePathResolver;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.FileUtil;
 import java.io.File;
@@ -116,7 +117,7 @@ public class ProjectViewVerifier {
           }
 
           WorkspacePath excludedDirectory = entry.directory;
-          if (FileUtil.isAncestor(
+          if (SafeFileUtil.isAncestor(
               excludedDirectory.relativePath(), includedDirectory.relativePath(), false)) {
             IssueOutput.error(
                     String.format(

@@ -18,6 +18,7 @@ package com.google.idea.blaze.base.model.primitives;
 import com.google.common.base.Objects;
 import com.google.idea.blaze.base.ideinfo.ProjectDataInterner;
 import com.google.idea.blaze.base.ideinfo.ProtoWrapper;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.openapi.util.io.FileUtil;
 import java.io.File;
 import javax.annotation.Nullable;
@@ -144,7 +145,7 @@ public final class ExecutionRootPath implements ProtoWrapper<String> {
    */
   public static boolean isAncestor(
       String possibleParentPath, String possibleChildPath, boolean strict) {
-    return FileUtil.isAncestor(possibleParentPath, possibleChildPath, strict);
+    return SafeFileUtil.isAncestor(possibleParentPath, possibleChildPath, strict);
   }
 
   public static ExecutionRootPath fromProto(String proto) {

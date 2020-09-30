@@ -18,6 +18,7 @@ package com.google.idea.blaze.base.model.primitives;
 import com.google.idea.blaze.base.ideinfo.ProtoWrapper;
 import com.google.idea.blaze.base.settings.BlazeImportSettings;
 import com.google.idea.blaze.base.settings.BlazeImportSettingsManager;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -131,7 +132,7 @@ public class WorkspaceRoot implements ProtoWrapper<String> {
   }
 
   private boolean isInWorkspace(String path) {
-    return FileUtil.isAncestor(directory.getPath(), path, false);
+    return SafeFileUtil.isAncestor(directory.getPath(), path, false);
   }
 
   @Override

@@ -24,6 +24,7 @@ import com.google.idea.blaze.base.projectview.ProjectViewSet;
 import com.google.idea.blaze.base.projectview.ProjectViewSet.ProjectViewFile;
 import com.google.idea.blaze.base.run.BlazeRunConfiguration;
 import com.google.idea.blaze.base.settings.Blaze;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.execution.RunManager;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.icons.AllIcons;
@@ -150,7 +151,7 @@ public class ExportRunConfigurationDialog extends DialogWrapper {
     if (projectViewSet != null) {
       for (ProjectViewFile projectViewFile : projectViewSet.getProjectViewFiles()) {
         File file = projectViewFile.projectViewFile;
-        if (file != null && FileUtil.isAncestor(workspaceRoot.directory(), file, false)) {
+        if (file != null && SafeFileUtil.isAncestor(workspaceRoot.directory(), file, false)) {
           return file.getParentFile();
         }
       }

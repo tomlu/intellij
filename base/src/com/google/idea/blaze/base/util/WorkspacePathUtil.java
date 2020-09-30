@@ -33,7 +33,7 @@ public class WorkspacePathUtil {
         .stream()
         .anyMatch(
             importRoot ->
-                FileUtil.isAncestor(importRoot.relativePath(), child.relativePath(), false));
+                SafeFileUtil.isAncestor(importRoot.relativePath(), child.relativePath(), false));
   }
 
   /** Removes any duplicates or overlapping directories */
@@ -56,7 +56,7 @@ public class WorkspacePathUtil {
       Collection<WorkspacePath> excludedPaths,
       WorkspacePath path) {
     for (WorkspacePath excluded : excludedPaths) {
-      if (FileUtil.isAncestor(excluded.relativePath(), path.relativePath(), false)) {
+      if (SafeFileUtil.isAncestor(excluded.relativePath(), path.relativePath(), false)) {
         return false;
       }
     }
@@ -64,7 +64,7 @@ public class WorkspacePathUtil {
       if (path.equals(otherDirectory)) {
         continue;
       }
-      if (FileUtil.isAncestor(otherDirectory.relativePath(), path.relativePath(), true)) {
+      if (SafeFileUtil.isAncestor(otherDirectory.relativePath(), path.relativePath(), true)) {
         return false;
       }
     }

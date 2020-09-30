@@ -19,6 +19,7 @@ import com.google.idea.blaze.base.model.primitives.WorkspacePath;
 import com.google.idea.blaze.base.projectview.ProjectViewStorageManager;
 import com.google.idea.blaze.base.sync.workspace.WorkspacePathResolver;
 import com.google.idea.blaze.base.ui.UiUtil;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDialog;
 import com.intellij.openapi.fileChooser.FileChooserFactory;
@@ -156,7 +157,7 @@ public class ImportFromWorkspaceProjectViewOption implements BlazeSelectProjectV
       if (WorkspacePath.isValid(projectViewPath)) {
         File ioFileLocation = workspacePathResolver.resolveToFile(new WorkspacePath(projectViewPath));
         VirtualFile fileLocation = LocalFileSystem.getInstance().findFileByIoFile(ioFileLocation);
-        if (fileLocation.exists() && FileUtil.isAncestor(fileBrowserRoot.getPath(), fileLocation.getPath(), true)) {
+        if (fileLocation.exists() && SafeFileUtil.isAncestor(fileBrowserRoot.getPath(), fileLocation.getPath(), true)) {
           startingLocation = fileLocation;
         }
       }

@@ -16,6 +16,7 @@
 package com.google.idea.blaze.base.model.primitives;
 
 import com.google.common.collect.ImmutableList;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import javax.annotation.Nullable;
@@ -123,7 +124,7 @@ public class WildcardTargetPattern {
     if (!recursive) {
       return packagePath.equals(packageDir);
     }
-    return FileUtil.isAncestor(packageDir.relativePath(), packagePath.relativePath(), false);
+    return SafeFileUtil.isAncestor(packageDir.relativePath(), packagePath.relativePath(), false);
   }
 
   /** Is this an excluded target pattern (i.e. starts with '-')? */

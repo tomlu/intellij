@@ -24,6 +24,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.idea.blaze.base.io.FileOperationProvider;
 import com.google.idea.blaze.base.io.VirtualFileSystemProvider;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.project.Project;
@@ -165,7 +166,7 @@ public class TestFileSystem {
             String.format(
                 "Invalid absolute file path. '%s' is not underneath the test file system root '%s'",
                 filePath, tempDirPath))
-        .that(FileUtil.isAncestor(tempDirPath, filePath, true))
+        .that(SafeFileUtil.isAncestor(tempDirPath, filePath, true))
         .isTrue();
     return FileUtil.getRelativePath(tempDirPath, filePath, File.separatorChar);
   }

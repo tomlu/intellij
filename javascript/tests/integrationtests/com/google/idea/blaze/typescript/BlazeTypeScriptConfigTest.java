@@ -28,6 +28,7 @@ import com.google.idea.blaze.base.model.primitives.Label;
 import com.google.idea.blaze.base.projectview.ProjectView;
 import com.google.idea.blaze.base.projectview.ProjectViewSet;
 import com.google.idea.blaze.base.projectview.section.ListSection;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.lang.javascript.frameworks.modules.JSModulePathSubstitution;
 import com.intellij.lang.typescript.tsconfig.TypeScriptConfig;
 import com.intellij.lang.typescript.tsconfig.TypeScriptConfigServiceImpl;
@@ -320,7 +321,7 @@ public class BlazeTypeScriptConfigTest extends BlazeIntegrationTestCase {
     public File getCanonicalFile(File file) throws IOException {
       file = file.getCanonicalFile();
       for (File link : symlinks.keySet()) {
-        if (FileUtil.isAncestor(link, file, /* strict= */ false)) {
+        if (SafeFileUtil.isAncestor(link, file, /* strict= */ false)) {
           return new File(symlinks.get(link), link.toPath().relativize(file.toPath()).toString());
         }
       }

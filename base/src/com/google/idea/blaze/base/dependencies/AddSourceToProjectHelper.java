@@ -48,6 +48,7 @@ import com.google.idea.blaze.base.sync.projectview.ImportRoots;
 import com.google.idea.blaze.base.sync.workspace.WorkspacePathResolver;
 import com.google.idea.blaze.base.sync.workspace.WorkspacePathResolverProvider;
 import com.google.idea.blaze.base.targetmaps.SourceToTargetMap;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationDisplayType;
 import com.intellij.notification.NotificationGroup;
@@ -310,7 +311,7 @@ class AddSourceToProjectHelper {
     return Blaze.getBuildSystemProvider(project)
         .buildArtifactDirectories(WorkspaceRoot.fromProject(project))
         .stream()
-        .anyMatch(outDir -> FileUtil.isAncestor(outDir, path.relativePath(), false));
+        .anyMatch(outDir -> SafeFileUtil.isAncestor(outDir, path.relativePath(), false));
   }
 
   @Nullable
