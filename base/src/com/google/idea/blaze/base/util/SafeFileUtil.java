@@ -1,5 +1,6 @@
 package com.google.idea.blaze.base.util;
 
+import com.google.common.base.Strings;
 import com.intellij.openapi.util.io.FileUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,5 +17,14 @@ public class SafeFileUtil {
 
     public static String normalize(String path) {
         return path.replace('\\', '/');
+    }
+
+    public static String join(String first, String second) {
+        if (Strings.isNullOrEmpty(first)) {
+            return second;
+        } else if (Strings.isNullOrEmpty(second)) {
+            return first;
+        }
+        return first + "/" + second;
     }
 }

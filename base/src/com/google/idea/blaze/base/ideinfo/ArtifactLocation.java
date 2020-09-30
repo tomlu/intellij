@@ -19,6 +19,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import com.google.devtools.intellij.aspect.Common;
+import com.google.idea.blaze.base.util.SafeFileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import java.nio.file.Paths;
 import java.util.List;
@@ -112,7 +113,7 @@ public final class ArtifactLocation
 
   /** For main-workspace source artifacts, this is simply the workspace-relative path. */
   public String getExecutionRootRelativePath() {
-    return Paths.get(getRootExecutionPathFragment(), getRelativePath()).toString();
+    return SafeFileUtil.join(getRootExecutionPathFragment(), getRelativePath());
   }
 
   public static Builder builder() {
