@@ -48,6 +48,7 @@ public class WorkspacePath implements ProtoWrapper<String>, Serializable {
    * @throws IllegalArgumentException if the path is invalid
    */
   public WorkspacePath(String relativePath) {
+    relativePath = normalize(relativePath);
     String error = validate(relativePath);
     if (error != null) {
       throw new IllegalArgumentException(
@@ -62,6 +63,10 @@ public class WorkspacePath implements ProtoWrapper<String>, Serializable {
 
   public static boolean isValid(String relativePath) {
     return validate(relativePath) == null;
+  }
+
+  private static String normalize(String relativePath) {
+    return relativePath.replace('\\', '/');
   }
 
   /** Validates a workspace path. Returns null on success or an error message otherwise. */
