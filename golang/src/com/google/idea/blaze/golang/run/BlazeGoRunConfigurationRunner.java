@@ -287,6 +287,7 @@ public class BlazeGoRunConfigurationRunner implements BlazeCommandRunConfigurati
         // bazel build adds these flags themselves with -c dbg
         // https://github.com/bazelbuild/rules_go/issues/741
         flags.add("--compilation_mode=dbg");
+        flags.add("--@io_bazel_rules_go//go/config:debug");
       }
 
       File scriptPathFile = null;
